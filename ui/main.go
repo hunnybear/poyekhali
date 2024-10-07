@@ -97,3 +97,5 @@ func Ui() {
 	drawLine(s, cell{10, 10}, cell{10, 32}, drawStyle)
 	time.Sleep(3 * time.Second)
 }
+
+func main() {}
