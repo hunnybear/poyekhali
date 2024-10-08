@@ -1,0 +1,21 @@
+{"drawings":[
+	{
+		"TestBoxes":[
+			{
+				"start": {"x":3, "y":5},
+				"end": {"x":35,"y":56},
+				"widths": [3]
+			}
+		],
+		"TestLines":[
+			{
+				"start": {"x": 5, "y": 6},
+				"end": {"x": 5, "y": 24}
+			}
+		],
+
+		"DRAWCOLOR": [255,255,255],
+		"textColor": [255, 255, 0]
+	}
+
+],"pause":5, "pauseDiv": 2}

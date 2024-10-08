@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-
+	"errors"
 	"flag"
+	"os"
 
 	krpcgo "github.com/atburke/krpc-go"
 
@@ -21,8 +22,26 @@ func main() {
 	showUI := false
 	launch := false
 	connect := false
+	var testFilePtr *string
+
+	setUITestingFlag := func(flagVal string) error {
+		if flagVal == "" {
+			testFilePtr = nil
+			return errors.New("-ui_test flag requires a value")
+		}
+		if flagVal == "runtest" || flagVal == "unmarshalTest" {
+			// pass, nothin, use this
+		} else if _, err := os.Stat(flagVal); errors.Is(err, os.ErrNotExist) {
+			panic(err)
+		}
+
+		testFilePtr = &flagVal
+
+		return nil
+	}
 
 	flag.BoolFunc("ui", "show UI", func(_ string) error { setFlag(&showUI, true); return nil })
+	flag.Func("ui_test", "Test configuration file for testing UI", setUITestingFlag)
 	flag.BoolFunc("launch", "launchify me, capn", func(_ string) error { setFlag(&launch, true); return nil })
 	flag.BoolFunc("connect", "connect to server", func(_ string) error { setFlag(&connect, true); return nil })
 	flag.Parse()
@@ -49,7 +68,17 @@ func main() {
 	}
 
 	if showUI == true {
-		ui.Ui()
+		ui.UI()
+	}
+
+	if testFilePtr != nil {
+		if *testFilePtr == "runtest" {
+			ui.UIOnTest()
+		} else if *testFilePtr == "unmarshalTest" {
+			ui.TestUI([]byte(`{"drawings":[],"pause":3,"pause_div":2}`))
+		} else {
+			ui.TestUIFromFile(testFilePtr)
+		}
 	}
 
 }
