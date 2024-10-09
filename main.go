@@ -68,10 +68,11 @@ func main() {
 	}
 
 	if showUI == true {
-		ui.UI()
-	}
-
-	if testFilePtr != nil {
+		if testFilePtr != nil {
+			panic(errors.New("can't specify test file and standard ui"))
+		}
+		ui.StartMissionControl()
+	} else if testFilePtr != nil {
 		if *testFilePtr == "runtest" {
 			ui.UIOnTest()
 		} else if *testFilePtr == "unmarshalTest" {
