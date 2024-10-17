@@ -71,7 +71,8 @@ func main() {
 		if testFilePtr != nil {
 			panic(errors.New("can't specify test file and standard ui"))
 		}
-		ui.StartMissionControl()
+		quit := ui.StartMissionControl()
+		defer quit()
 	} else if testFilePtr != nil {
 		if *testFilePtr == "runtest" {
 			ui.UIOnTest()
